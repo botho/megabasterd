@@ -542,7 +542,7 @@ public class QuotaRecoveryPanel extends JPanel {
     private static ProbeResult probe(String host, int port) {
         long t0 = System.currentTimeMillis();
         try (Socket s = new Socket()) {
-            s.connect(new InetSocketAddress(host, port), 3000);
+            s.connect(new InetSocketAddress(host, port), 5000);
             return new ProbeResult(true, System.currentTimeMillis() - t0, null);
         } catch (Exception ex) {
             return new ProbeResult(false, System.currentTimeMillis() - t0, ex.getClass().getSimpleName());
