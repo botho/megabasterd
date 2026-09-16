@@ -25,8 +25,13 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
+      - name: Rename jar-with-dependencies to MegaBasterd.jar
+        run: |
+          jar_path=$(find target -maxdepth 1 -name "*-jar-with-dependencies.jar" | head -n 1)
+          cp "$jar_path" target/MegaBasterd.jar
+
       - name: Upload jar artifact
         uses: actions/upload-artifact@v4
         with:
           name: MegaBasterd
-          path: target/*.jar
+          path: target/MegaBasterd.jar
