@@ -283,7 +283,7 @@ public class FolderLinkDialog extends javax.swing.JDialog {
 
         skip_rest_button.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         skip_rest_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-trash-can-30.png"))); // NOI18N
-        skip_rest_button.setText("REMOVE ALL EXCEPT THIS");
+        skip_rest_button.setText("KEEP THIS");
         skip_rest_button.setDoubleBuffered(true);
         skip_rest_button.setEnabled(false);
         skip_rest_button.addActionListener(new java.awt.event.ActionListener() {
@@ -371,7 +371,7 @@ public class FolderLinkDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_skip_buttonActionPerformed
 
     /**
-     * Post-mutation refresh shared by the REMOVE THIS / REMOVE ALL EXCEPT THIS
+     * Post-mutation refresh shared by the REMOVE THIS / KEEP THIS
      * buttons and the right-click context menu (see attachTreeContextMenu).
      * Recalculates folder sizes off the EDT and then re-enables / re-disables
      * the action controls depending on whether anything is left in the tree.
@@ -390,7 +390,11 @@ public class FolderLinkDialog extends javax.swing.JDialog {
 
                 file_tree.setEnabled(true);
 
-                file_tree.setModel(new DefaultTreeModel((TreeNode) file_tree.getModel().getRoot()));
+                // The model already reports node removals. Reinstalling it here
+                // made Swing forget every expanded folder after REMOVE THIS;
+                // repainting is enough to display the recalculated sizes.
+                file_tree.revalidate();
+                file_tree.repaint();
 
                 boolean root_childs = ((TreeNode) file_tree.getModel().getRoot()).getChildCount() > 0;
 
